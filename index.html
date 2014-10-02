@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      .scrub{
+        position: relative;
+        bottom: 20px;
+        left: 0;
+        height: 0;
+        width: 100%;
+        padding-bottom: 150%;
+        overflow: hidden;
+        background-position: center center;
+        background-color: #1c1d1c;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        z-index: 1;
+      }
+    </style>
+    <script src="http://js.leapmotion.com/leap-0.6.0-beta3.min.js"></script>
+  </head>
+  <body>
+    <div data-scrub
+      data-scrub-src="desktop_a.jpg"
+      data-scrub-frames="40"
+      data-starting-percent="100"
+    ></div>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="scrub.js"></script>
+    <script>
+      (function() {
+        var position, scrubber, update;
+        position = 0;
+
+        scrubber = $("[data-scrub]").scrub();
+
+        Leap.loop({gestures: false}, function(frame) {
+          if (frame.hands.length) {
+            position = Math.max(-1, Math.min(1, frame.hands[0].palmPosition[0] / 200));
+            scrubber.percent((position + 1) * 50);
+          }
+        });
+      }());
+    </script>
+  </body>
+</html>
